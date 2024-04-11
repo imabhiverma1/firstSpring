@@ -2,43 +2,48 @@ package com.example.firstSpring.service;
 
 import com.example.firstSpring.entity.Employee;
 import com.example.firstSpring.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeService {
 
-    List<Employee> employeesList = new ArrayList<>(Arrays.asList(
-            new Employee(1, "First Employee", "Delhi"),
-            new Employee(2, "Second Employee", "Noida")
-    ));
+  List<Employee> employeesList = new ArrayList<>(Arrays.asList(
+      new Employee(1, "First Employee", "Delhi"),
+      new Employee(2, "Second Employee", "Noida")
+  ));
 
-    @Autowired
-    EmployeeRepository employeeRepository;
+  EmployeeRepository employeeRepository;
 
-    public List<Employee> getALlEmployees() {
-        return employeesList;
-    }
+  @Autowired
+  EmployeeService(EmployeeRepository employeeRepository) {
+    this.employeeRepository = employeeRepository;
+  }
 
-    public Employee findAEmployee(int employeeId) {
-        return employeesList
-                .stream()
-                .filter(employee -> employee.getEmployeeId() == employeeId)
-                .findFirst()
-                .get();
-    }
+  public List<Employee> getALlEmployees() {
+    return employeeRepository.findAll();
+  }
 
-    public void createEmployee(Employee employee) {
-        //employeesList.add(employee);
-        employeeRepository.save(employee);
-    }
+  public Employee findAEmployee(int employeeId) {
+   /* return employeesList
+        .stream()
+        .filter(employee -> employee.getEmployeeId() == employeeId)
+        .findFirst()
+        .get();*/
+    return employeeRepository.findById(employeeId)
+        .orElseThrow(() -> new RuntimeException("Not Found"));
+  }
 
-    public void updateEmployee(Employee employee) {
-        List<Employee> tempEmployee = new ArrayList<>();
+  public void createEmployee(Employee employee) {
+    //employeesList.add(employee);
+    employeeRepository.save(employee);
+  }
+
+  public void updateEmployee(Employee employee) {
+        /*List<Employee> tempEmployee = new ArrayList<>();
         for (Employee emp : employeesList) {
             if (emp.getEmployeeId() == employee.getEmployeeId()) {
                 emp.setEmployeeName(employee.getEmployeeName());
@@ -46,11 +51,12 @@ public class EmployeeService {
             }
             tempEmployee.add(emp);
         }
-        this.employeesList = tempEmployee;
-    }
+        this.employeesList = tempEmployee;*/
+    employeeRepository.save(employee);
+  }
 
-    public List<Employee> deleteEmployee(int id) {
-        List<Employee> tempEmployee = new ArrayList<>();
+  public void deleteEmployee(int id) {
+        /*List<Employee> tempEmployee = new ArrayList<>();
 
         for (Employee employee : employeesList) {
             if (employee.getEmployeeId() == id)
@@ -59,6 +65,7 @@ public class EmployeeService {
             tempEmployee.add(employee);
         }
         this.employeesList = tempEmployee;
-        return employeesList;
-    }
+        return employeesList;*/
+    employeeRepository.delete(employeeRepository.getById(id));
+  }
 }

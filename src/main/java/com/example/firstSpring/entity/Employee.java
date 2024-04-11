@@ -4,46 +4,59 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int employeeId;
-    String employeeName;
-    String employeeCity;
 
-    public Employee() {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  int employeeId;
+  String employeeName;
+  String employeeCity;
+  @OneToOne
+  @JoinColumn(name = "fk_spouse")
+  private Spouse spouse;
 
-    }
+  public Employee() {
+  }
 
-    public Employee(int employeeId, String employeeName, String employeeCity) {
-        this.employeeId = employeeId;
-        this.employeeName = employeeName;
-        this.employeeCity = employeeCity;
-    }
+  public Employee(int employeeId, String employeeName, String employeeCity) {
+    this.employeeId = employeeId;
+    this.employeeName = employeeName;
+    this.employeeCity = employeeCity;
+  }
 
-    public int getEmployeeId() {
-        return employeeId;
-    }
+  public Spouse getSpouse() {
+    return spouse;
+  }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
+  public void setSpouse(Spouse spouse) {
+    this.spouse = spouse;
+  }
 
-    public String getEmployeeName() {
-        return employeeName;
-    }
+  public int getEmployeeId() {
+    return employeeId;
+  }
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
+  public void setEmployeeId(int employeeId) {
+    this.employeeId = employeeId;
+  }
 
-    public String getEmployeeCity() {
-        return employeeCity;
-    }
+  public String getEmployeeName() {
+    return employeeName;
+  }
 
-    public void setEmployeeCity(String employeeCity) {
-        this.employeeCity = employeeCity;
-    }
+  public void setEmployeeName(String employeeName) {
+    this.employeeName = employeeName;
+  }
+
+  public String getEmployeeCity() {
+    return employeeCity;
+  }
+
+  public void setEmployeeCity(String employeeCity) {
+    this.employeeCity = employeeCity;
+  }
 }
